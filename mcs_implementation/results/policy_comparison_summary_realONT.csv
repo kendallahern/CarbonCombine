@@ -1,0 +1,4 @@
+policy,cluster_name,cluster_display_name,workload_name,completed,completion_slot,total_work,total_energy_kwh,total_carbon_grams,total_day_ahead_cost,total_real_time_cost,active_slots,max_scale_used,tie_threshold_ratio,tie_break_used_count,carbon_savings_vs_base_pct,day_ahead_cost_savings_vs_base_pct,real_time_cost_savings_vs_base_pct
+carbonscaler_base,cluster1,"Ontario, Canada",nbody100k,True,42,24.700000000000006,5.9399999999999995,386.7072,236.63673000000006,221.9110245,16,2,,0,0.0,0.0,0.0
+carbonscaler_price_tiebreak_0.05,cluster1,"Ontario, Canada",nbody100k,True,42,24.700000000000006,5.9399999999999995,386.7072,231.91971000000004,179.3685245,16,2,0.05,25,0.0,1.9933591881530894,19.170971832451702
+carbonscaler_price_tiebreak_0.20,cluster1,"Ontario, Canada",nbody100k,True,46,24.700000000000006,5.94,399.59700000000004,203.74424400000004,96.83589850000003,16,2,0.2,26,-3.3332195521573005,13.899991772198682,56.3627364984744

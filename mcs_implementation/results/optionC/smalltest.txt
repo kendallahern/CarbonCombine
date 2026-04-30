@@ -1,0 +1,28 @@
+================================================================================
+lambda_carbon: 0.6
+completed: True
+completion_slot: 39
+total_carbon_grams: 478.63860000000005
+total_day_ahead_cost: 108.51687000000001
+total_real_time_cost: 70.64177450000001
+max_scale_used: 2
+scales: [2, 2, 2, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+================================================================================
+lambda_carbon: 0.8
+completed: True
+completion_slot: 39
+total_carbon_grams: 399.87420000000003
+total_day_ahead_cost: 189.84517200000002
+total_real_time_cost: 87.0219845
+max_scale_used: 2
+scales: [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+================================================================================
+lambda_carbon: 0.9
+completed: True
+completion_slot: 40
+total_carbon_grams: 386.24519999999995
+total_day_ahead_cost: 211.600884
+total_real_time_cost: 107.74847050000002
+max_scale_used: 2
+scales: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0]
+(base) kendallahern@cu-genvpn-tcom-10 CarbonScaler % 

@@ -1,0 +1,2 @@
+price_traces:
+  cluster1: "mcs_implementation/traces/ontario_weeks/ontario_week08_2026-03-30_to_2026-04-05/cluster1_ontario_real_price.csv"

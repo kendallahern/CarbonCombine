@@ -1,0 +1,26 @@
+#!/bin/bash
+#SBATCH --job-name={{ job_name }}
+#SBATCH --nodes={{ nodes }}
+#SBATCH --ntasks-per-node=1
+#SBATCH --time={{ time_limit }}
+#SBATCH --output=/tmp/{{ job_name }}.out
+#SBATCH --error=/tmp/{{ job_name }}.err
+
+echo "Starting job: {{ job_name }}"
+echo "Cluster: {{ cluster_name }}"
+echo "Nodes: {{ nodes }}"
+echo "Slot minutes: {{ slot_minutes }}"
+echo "Checkpoint path: {{ checkpoint_path }}"
+echo "Slot index: {{ slot_index }}"
+echo "Scale: {{ scale }}"
+echo "Work per slot: {{ work_per_slot }}"
+echo "Remaining work: {{ remaining_work }}"
+
+python3 /tmp/nbody_slot_runner.py \
+  --checkpoint-path "{{ checkpoint_path }}" \
+  --slot-index "{{ slot_index }}" \
+  --scale "{{ scale }}" \
+  --work-per-slot "{{ work_per_slot }}" \
+  --remaining-work "{{ remaining_work }}"
+
+echo "Completed job: {{ job_name }}"

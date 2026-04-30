@@ -1,0 +1,164 @@
+I went through both CSVs closely and there are several real anomalies worth flagging.
+The biggest one is that large parts of the Option B sweep appear functionally insensitive to the parameters. In the averaged file, the rows for optionB_budget0.90_beta0.0100_gamma0.50, optionB_budget0.90_beta0.01_gamma0.25, optionB_budget0.90_beta0.01_gamma0.50, optionB_budget0.90_beta0.01_gamma0.75, and optionB_budget0.90_beta0.01_gamma1.00 all land on the same completion rate, completion slot, work, energy, carbon, day-ahead cost, real-time cost, and savings metrics. That is not just “similar,” it is effectively identical output for multiple different gamma settings. The most likely explanation is that gamma is not actually affecting the decision logic over this range, or its effect is being clipped by another rule earlier in the pipeline. 
+A related anomaly is that the Option B beta sweep is also mostly flat. In the averaged file, beta values 0.0025, 0.0050, and 0.0100 at budget 0.90 are very close, and in the weekly file they are often exactly identical inside the same week. For example, in week 1 the 0.0025, 0.0050, and 0.0100 beta settings all produce the same incomplete result; in week 2 even 0.0200 joins that same output cluster; and in week 4 the entire beta/gamma block for budget 0.90 collapses to one shared result. That strongly suggests a thresholding or discretization effect where small beta changes never alter the chosen schedule. 
+There is also a budget plateau anomaly in Option B: budget=1.10 and budget=1.20 are exactly identical in the averaged file, and the same pattern shows up week by week. In week 1, weeks 5, and week 6, those two budget settings produce exactly the same outputs; in week 7 even budget=1.00, 1.10, and 1.20 collapse together. This usually means the budget constraint is no longer binding once it crosses a threshold, so increasing it further has zero operational effect. That is useful scientifically, but it is also an anomaly in the sense that part of the sweep is redundant. 
+The most dramatic version of that happens in week 8, where a huge chunk of Option B becomes almost degenerate. In that week, all six budget settings from 0.80 through 1.20 share the same output, and the gamma variants at budget 0.90 also repeat that same output, while beta 0.0100 and 0.0200 also match it. In practice, that means a large fraction of the benchmark sweep is not exploring new behavior that week at all. That could happen if one dominant branch of the controller was activated for every one of those parameter settings. 
+A separate data-quality issue is that the same logical configuration appears twice under different sweep groups. optionB_budget0.90_beta0.01_gamma0.50 appears once as optionB_budget_sweep and again as optionB_gamma_sweep in the averaged file, and the same duplication exists inside the weekly file for each week. That is not necessarily wrong, but it is an anomaly because it can lead to accidental double-counting in summary charts, Pareto plots, or ranking tables if you group by policy row instead of unique parameter tuple. 
+Another important anomaly is mixing incomplete and complete runs while still recording full numeric metrics for incomplete ones. In the weekly file, many Option B rows have completed=False and a blank completion_slot, but they still report nonzero work, energy, carbon, and both cost metrics. In the averaged file, this shows up as very low completion rates for several Option B settings, such as 0.142857, 0.285714, 0.428571, and 0.571429, yet those rows still have full averages for carbon and cost. That means some of your sweep summary is comparing completed policies against partially executed policies, which is analytically risky unless that is intentional. 
+The completion-rate structure of Option B is itself anomalous and informative. In the averaged file, low budgets perform especially badly: budget=0.80 completes only 1/7 weeks, 0.85 completes 2/7, and many of the budget=0.90 variants also only complete 2/7. But beta=0.02 improves that to 3/7, beta=0.04 to 4/7, and budgets 1.00+ jump all the way to 7/7. That sharp step change suggests a phase-transition-style threshold rather than a smooth parameter-response curve. 
+Option A shows a different anomaly: small tie-threshold changes often do nothing at all. In week 1, tie=0.01 and 0.03 exactly match the CarbonScaler base, while 0.05, 0.10, and 0.20 all match one another and also match Option C lambda=0.90. In week 2, tie=0.01, 0.03, 0.05, and 0.10 all exactly match the base. In week 8, tie=0.01 through 0.10 again all equal the base. So the lower tie values are often not meaningfully changing behavior. That likely means the tie-break logic only activates once the threshold crosses some hidden spread in the underlying scores. 
+Option C has its own plateau anomaly: some lambda changes produce exactly the same schedule. In week 5, lambda=0.50 and 0.60 are identical; in week 6, lambda=0.80 and 0.90 are identical; in week 8, lambda=0.50 and 0.60 are again identical. That points to either coarse scheduling bins or a weighted objective where those lambda changes are too small to overcome the same winning decision. 
+There are also several extreme outliers in carbon for price_only, especially compared with the base. In the averaged file, price_only has average carbon of 394.21 g, versus 174.35 g for the base, while its real-time cost is much lower than the base. So it is saving money, but at a very large carbon penalty. In the weekly file this becomes extreme: week 4 shows 825.54 g for price_only against 131.56 g for the base, and week 7 shows 536.98 g against 322.82 g for the base. Those are not data-entry mistakes—they are internally consistent—but they are clear behavioral anomalies and probably the strongest evidence of the cost-vs-carbon tradeoff your benchmark sweep is exposing. 
+Another anomaly is that some policies move in the “wrong” direction on both axes relative to the base. For example, in the averaged file optionB_budget1.00_beta0.01_gamma0.50 has higher average carbon than the base (181.24 g vs 174.35 g) and still a large positive average price differential because real-time exceeds day-ahead by about 60.98. So it is worse on carbon and still not close to zero price differential. That suggests some parts of Option B are dominated choices, not efficient tradeoffs. 
+I would also flag a temporal indexing anomaly: the weekly file contains weeks 01, 02, 04, 05, 06, 07, and 08, but no 03. Since the averaged file says week_count=7 for every policy, the math is internally consistent, but your benchmark sweep is not actually a consecutive eight-week block. That is worth explaining in the report so a reader does not assume a missing run was silently dropped. 
+My high-level read is this: your sweep contains three classes of anomalies. First, redundant regions of the search space where changing parameters does nothing. Second, fairness/comparability issues where incomplete Option B runs are still averaged against complete runs. Third, true behavioral outliers, especially price_only, which buys cost reduction at an enormous carbon penalty. Those are all useful findings, but they should be separated in your writeup as “controller insensitivity,” “data-quality / evaluation caveat,” and “performance outliers,” because they mean different things scientifically.
+The next best step is to turn this into a compact anomaly table with columns like: anomaly type, affected policies, weeks affected, evidence, and likely explanation.
+
+
+Yes — this is exactly the kind of thing your professor is looking for in a benchmark sweep. I’ve distilled everything into a clean anomaly table you can directly use in a report or slide.
+ 
+📊 Benchmark Sweep Anomaly Summary
+(Based on both your weekly dataset and averaged dataset )
+ 
+🔴 1. Parameter Insensitivity (Flat Response Regions)
+Anomaly Type	Affected Policies	Weeks Affected	Evidence	Likely Explanation
+Gamma has no effect	Option B (budget=0.90, β=0.01, γ sweep)	Most weeks + averaged	Multiple gamma values produce identical outputs	Gamma not active in decision logic OR dominated by another constraint
+Beta has minimal effect	Option B (β = 0.0025 → 0.01)	Many weeks	Identical or near-identical outputs across beta values	Parameter below sensitivity threshold
+Tie threshold inactive	Option A (tie=0.01–0.05)	Weeks 1, 2, 8	Matches CarbonScaler base exactly	Tie-break condition rarely triggered
+👉 Interpretation:
+Large parts of your parameter sweep are not actually exploring new behavior.
+ 
+🟠 2. Parameter Saturation (Plateaus)
+Anomaly Type	Affected Policies	Weeks Affected	Evidence	Likely Explanation
+Budget saturation	Option B (budget ≥ 1.10)	All weeks	1.10 and 1.20 produce identical results	Constraint no longer binding
+Lambda plateaus	Option C (λ pairs like 0.5/0.6 or 0.8/0.9)	Weeks 5, 6, 8	Identical outputs for different λ	Discrete scheduling decisions override weighting
+Full sweep collapse	Option B (week 8)	Week 8	Many configs identical	Single dominant scheduling regime
+👉 Interpretation:
+You’ve hit regions where increasing parameters has zero marginal impact.
+ 
+🟡 3. Redundant Configurations (Duplicate Experiments)
+Anomaly Type	Affected Policies	Weeks Affected	Evidence	Likely Explanation
+Duplicate configs across sweep groups	Option B (same params, different sweep_group)	All	Same config appears multiple times	Data organization issue
+Identical outputs across configs	Option B, Option A, Option C	Many	Different configs → same outputs	Hidden equivalence in decision logic
+👉 Interpretation:
+Your sweep includes duplicate or equivalent experiments, inflating search space.
+ 
+🔵 4. Completion Rate Anomalies (Critical)
+Anomaly Type	Affected Policies	Weeks Affected	Evidence	Likely Explanation
+Partial completion used in averages	Option B (low budgets)	All	Completion rates like 0.14, 0.28, etc.	Averaging incomplete runs
+Sharp phase transition	Option B (budget ≈ 1.0)	All	Completion jumps from ~30% → 100%	Hard feasibility threshold
+👉 Interpretation:
+You are comparing:
+•	fully completed policies vs 
+•	partially executed policies 
+⚠️ This is the most important anomaly for correctness.
+ 
+🟣 5. Extreme Behavioral Outliers (True Insights)
+Anomaly Type	Affected Policies	Weeks Affected	Evidence	Likely Explanation
+Carbon explosion	price_only	All (esp. week 4)	Carbon 3–6× higher than base	Ignores carbon entirely
+Cost-carbon tradeoff extreme	Option C (low λ)	All	Large cost savings but high carbon	Strong weighting toward price
+Dominated strategies	Option B (budget ≈ 1.0)	Some	Worse carbon AND not near zero cost diff	Poor parameter region
+👉 Interpretation:
+These are real, meaningful results (not bugs):
+•	Show tradeoffs 
+•	Validate your framework 
+ 
+⚫ 6. Temporal/Data Coverage Anomaly
+Anomaly Type	Affected Policies	Weeks Affected	Evidence	Likely Explanation
+Missing week index	All	Dataset-wide	Weeks: 01, 02, 04, 05, 06, 07, 08	Week 03 missing
+👉 Interpretation:
+Not an error, but must be explained in your report.
+ 
+🧠 Key Takeaways (What You Should Say)
+If you summarize this for your professor, the 3 strongest points are:
+1. Large parts of the parameter space are inactive
+“Many parameters (β, γ, tie threshold) do not affect outcomes over large ranges, indicating the controller operates in discrete regimes rather than continuous sensitivity.”
+ 
+2. There is a sharp feasibility boundary
+“Option B exhibits a phase transition around budget ≈ 1.0, where completion jumps from partial to full, suggesting a hard constraint threshold.”
+ 
+3. Strong cost vs carbon tradeoff exists
+“Price-only optimization significantly reduces cost but leads to extreme increases in carbon emissions, validating the need for multi-objective optimization.”
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+REGION COMPARISON
+
+Cross-region evaluation reveals that scheduler ranking is not invariant across electricity markets. Price-only and weighted policies can reduce realized cost exposure but may incur substantial carbon penalties, especially in higher-carbon regions. Budget-constrained scheduling appears to offer a more robust compromise, maintaining moderate carbon and cost-gap behavior across both Ontario and ERCOT/Texas.
+
+
+What stands out most is that moving from Ontario to ERCOT/Texas shifts nearly every policy sharply to the right, meaning the same scheduler produces much higher average carbon emissions in Texas. That is the dominant generalization result.
+
+The y-axis is also important: positive cost gap means real-time cost exceeded day-ahead cost. Most policies sit above zero, so across both regions, the real-time market generally ended up more expensive than the day-ahead estimate for the schedules selected. That is consistent with the purpose of this analysis: the scheduler plans using day-ahead prices, but its realized cost is evaluated against real-time prices.
+
+Main conclusions
+1. Carbon outcomes do not generalize cleanly across regions
+
+Ontario points cluster around roughly 170–400 gCO₂eq, while Texas points mostly move to roughly 950–1,600+ gCO₂eq, with price-only reaching even higher. That suggests the scheduler logic is portable, but the carbon benefit is highly region-dependent. This makes sense because electricity carbon intensity is spatially and temporally dependent; tools like Electricity Maps and WattTime-style analyses are built around that exact regional variability.
+
+For the paper, you can say:
+
+The scheduling policies generalize mechanically across regions, but not environmentally: applying the same policy family to ERCOT/Texas shifts the carbon-cost tradeoff frontier substantially upward in carbon emissions relative to Ontario.
+
+2. Option B looks the most stable across regions
+
+The green Option B points are relatively compact compared with Option C and price-only. The dashed green lines are mostly shorter and more horizontally clustered than the red/orange lines. That suggests the budget-constrained policy is less extreme and more regionally robust.
+
+This is a strong result because Option B is not simply chasing low price or low carbon. It constrains cost while still retaining urgency and carbon awareness.
+
+You can frame it as:
+
+Option B appears to provide the most stable cross-region behavior, producing moderate carbon emissions and moderate real-time/day-ahead cost gaps across both Ontario and ERCOT/Texas. This suggests that the budget constraint acts as a regularizer on the scheduler.
+
+3. Price-only is an important anomaly
+
+The orange price-only point is the farthest right on the plot, around very high carbon, but it has a relatively low cost gap. This is exactly what you would expect from a policy that ignores carbon entirely.
+
+It is useful as a lower-bound economic baseline:
+
+Price-only scheduling reduces exposure to real-time/day-ahead cost divergence, but at the cost of very poor carbon performance. This confirms that price minimization alone is insufficient for carbon-aware scheduling.
+
+This is a strong publication-style contrast: price-only is not “bad” universally; it is good at one objective and bad at the other.
+
+4. Option C is highly sensitive to its weight parameter
+
+The red Option C points show the widest spread. Some red points are low on the y-axis, meaning they achieve small real-time/day-ahead cost gaps, but others jump much higher. Several red dashed lines are long, meaning the same weighted policy behaves very differently between Ontario and Texas.
+
+This suggests Option C is powerful but fragile:
+
+The weighted objective provides a flexible carbon-price tradeoff, but its performance depends strongly on the selected λ value and on regional market/carbon structure. In ERCOT/Texas, the same weighting can produce substantially different cost-carbon behavior than in Ontario.
+
+That is important: Option C may need region-specific tuning, while Option B may be more robust.
+
+5. Option A stays carbon-first but still has high cost-gap exposure
+
+The blue Option A points are close to the baseline in carbon behavior, but they sit fairly high on cost gap. That makes sense because Option A only uses price as a tie-breaker. It does not fundamentally optimize price; it only intervenes when carbon choices are similar.
+
+For the paper:
+
+Option A preserves the carbon-first behavior of the baseline, but because price is only used as a secondary tie-breaker, it does not consistently reduce exposure to real-time price deviations.
+
+6. Baseline carbon-only generalizes poorly on price
+
+The baseline point shifts from Ontario to Texas with both higher carbon and high cost gap. That is the clearest evidence that carbon-only scheduling is not enough when real-time market exposure matters.
+
+IESO explicitly distinguishes day-ahead and real-time Ontario zonal prices, and ERCOT’s real-time market publishes frequent LMPs from SCED runs, so this day-ahead vs real-time comparison is meaningful for both market structures.
+
+Biggest anomalies to call out
+Anomaly 1: Price-only has low cost gap but extreme carbon
+
+This is not an error; it is a useful extreme point. It shows that the lowest-cost behavior can be environmentally undesirable.
+
+Anomaly 2: Option C has very long region-shift lines
+
+Some Option C configurations move dramatically between regions. This suggests the weighted score may overfit the local relationship between carbon and price. If carbon and price are aligned in one region but misaligned in another, the same λ can produce very different outcomes.
+
+Anomaly 3: Option B variants cluster tightly
+
+This is actually a positive anomaly. Despite multiple parameter sweeps, Option B remains relatively stable. That supports the claim that budget constraints produce more robust behavior than unconstrained weighted scoring.
+
+

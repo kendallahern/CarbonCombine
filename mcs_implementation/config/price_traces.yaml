@@ -1,0 +1,7 @@
+price_traces:
+  # cluster1: "mcs_implementation/traces/cluster1_ontario_prices.csv"
+  cluster1: "mcs_implementation/traces/cluster1_ontario_real_prices.csv"
+  cluster2: "mcs_implementation/traces/cluster2_california_prices.csv"
+  cluster3: "mcs_implementation/traces/cluster3_netherlands_prices.csv"
+  cluster4: "mcs_implementation/traces/cluster4_texas_prices.csv"
+  cluster5: "mcs_implementation/traces/cluster5_arizona_prices.csv"

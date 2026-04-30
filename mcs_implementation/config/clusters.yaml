@@ -1,0 +1,56 @@
+clusters:
+  - name: cluster1
+    region: ontario
+    display_name: "Ontario, Canada"
+    slurm_cluster_name: "cluster1"
+    partition: "cpu"
+    nodes: 8
+    max_replicas: 5
+    # trace_file: "mcs_implementation/traces/cluster1_ontario.csv"
+    trace_file: "mcs_implementation/traces/cluster1_ontario_real_carbon.csv"
+    speed_factor: 1.00
+    enabled: true
+
+  - name: cluster2
+    region: california
+    display_name: "California, US"
+    slurm_cluster_name: "cluster2"
+    partition: "cpu"
+    nodes: 8
+    max_replicas: 5
+    trace_file: "mcs_implementation/traces/cluster2_california.csv"
+    speed_factor: 1.00
+    enabled: true
+
+  - name: cluster3
+    region: netherlands
+    display_name: "Netherlands"
+    slurm_cluster_name: "cluster3"
+    partition: "cpu"
+    nodes: 8
+    max_replicas: 5
+    trace_file: "mcs_implementation/traces/cluster3_netherlands.csv"
+    speed_factor: 1.00
+    enabled: true
+
+  - name: cluster4
+    region: texas
+    display_name: "Texas, US"
+    slurm_cluster_name: "cluster4"
+    partition: "cpu"
+    nodes: 8
+    max_replicas: 5
+    trace_file: "mcs_implementation/traces/cluster4_texas.csv"
+    speed_factor: 1.00
+    enabled: true
+
+  - name: cluster5
+    region: arizona
+    display_name: "Arizona, US"
+    slurm_cluster_name: "cluster5"
+    partition: "cpu"
+    nodes: 8
+    max_replicas: 5
+    trace_file: "mcs_implementation/traces/cluster5_arizona.csv"
+    speed_factor: 1.00
+    enabled: true

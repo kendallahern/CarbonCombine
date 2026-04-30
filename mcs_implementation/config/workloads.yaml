@@ -1,0 +1,31 @@
+workloads:
+  - name: nbody100k
+    display_name: "N-Body (N=100k)"
+    type: mpi
+    min_replicas: 1
+    max_replicas: 2
+
+    # Below means:
+    #   at scale 1, throughput = 1 work unit per slot-hour
+    #   so the job takes about 24 one-hour slots  
+    baseline_runtime_hours: 24.0
+    slot_minutes: 60
+    total_work_units: 24.0
+    deadline_hours: 48.0
+
+    throughput_by_scale:
+      1: 1.00
+      2: 1.87
+      # 3: 2.61
+      # 4: 3.18
+      # 5: 3.55
+
+    utilization_by_scale:
+      1: 0.95
+      2 : 0.92
+      # 3: 0.89
+      # 4: 0.85
+      # 5: 0.82
+
+    checkpointable: true
+    recompute_schedule_each_slot: true

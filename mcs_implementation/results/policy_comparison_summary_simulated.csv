@@ -1,0 +1,4 @@
+policy,cluster_name,cluster_display_name,workload_name,completed,completion_slot,total_work,total_energy_kwh,total_carbon_grams,total_day_ahead_cost,total_real_time_cost,active_slots,max_scale_used,tie_threshold_ratio,tie_break_used_count,carbon_savings_vs_base_pct,day_ahead_cost_savings_vs_base_pct,real_time_cost_savings_vs_base_pct
+carbonscaler_base,cluster2,"California, US",nbody100k,True,39,24.44000000000001,6.343568,395.5190400000001,85.91363200000002,86.39400000000002,14,2,,0,0.0,0.0,0.0
+carbonscaler_price_tiebreak_0.05,cluster2,"California, US",nbody100k,True,39,24.44000000000001,6.343568,395.5190400000001,85.91363200000002,86.39400000000002,14,2,0.05,17,0.0,0.0,0.0
+carbonscaler_price_tiebreak_0.20,cluster2,"California, US",nbody100k,True,39,24.44000000000001,6.343567999999999,400.32272000000006,85.43326400000002,84.47252800000001,14,2,0.2,26,-1.2145256015993529,0.5591289633756823,2.224080375952043

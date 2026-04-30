@@ -1,0 +1,2 @@
+price_traces:
+  cluster4: "mcs_implementation/traces/texas_weeks/texas_week05_2026-03-09_to_2026-03-15/cluster4_texas_real_price.csv"

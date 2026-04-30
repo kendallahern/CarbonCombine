@@ -1,0 +1,35 @@
+power_models:
+  cluster1:
+    display_name: "Ontario, Canada"
+    idle_watts_per_node: 110.0
+    full_watts_per_node: 210.0
+    pue: 1.10
+    network_overhead_watts_per_node: 5.0
+
+  cluster2:
+    display_name: "California, US"
+    idle_watts_per_node: 115.0
+    full_watts_per_node: 220.0
+    pue: 1.12
+    network_overhead_watts_per_node: 6.0
+
+  cluster3:
+    display_name: "Netherlands"
+    idle_watts_per_node: 120.0
+    full_watts_per_node: 230.0
+    pue: 1.08
+    network_overhead_watts_per_node: 6.0
+
+  cluster4:
+    display_name: "Texas, US"
+    idle_watts_per_node: 112.0
+    full_watts_per_node: 215.0
+    pue: 1.11
+    network_overhead_watts_per_node: 5.0
+
+  cluster5:
+    display_name: "Arizona, US"
+    idle_watts_per_node: 108.0
+    full_watts_per_node: 205.0
+    pue: 1.09
+    network_overhead_watts_per_node: 5.0

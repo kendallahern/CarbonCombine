@@ -1,0 +1,13 @@
+=== RESULTS ===
+policy: carbonscaler
+completed: True
+completion_slot: 39
+total_work: 24.0
+total_energy_kwh: 6.228879999999998
+total_carbon_grams: 385.1971199999999
+active_slots: 14
+max_scale_used: 2
+
+SCALES:
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+>>> 

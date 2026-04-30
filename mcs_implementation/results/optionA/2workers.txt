@@ -1,0 +1,40 @@
+BASE scales: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+BASE summary: {'policy': 'base', 'total_work': 24.44000000000001, 'total_energy_kwh': 6.343568, 'total_carbon_grams': 395.5190400000001, 'active_slots': 14.0, 'max_scale_used': 2.0, 'total_day_ahead_cost': 85.91363200000002, 'total_real_time_cost': 86.39400000000002}
+
+============================================================
+threshold: 0.01
+tie_break_used_count: 16
+scales: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+total_carbon_grams: 395.5190400000001
+total_day_ahead_cost: 85.91363200000002
+total_real_time_cost: 86.39400000000002
+day_ahead_cost_savings_vs_base: 0.0
+real_time_cost_savings_vs_base: 0.0
+============================================================
+threshold: 0.05
+tie_break_used_count: 17
+scales: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+total_carbon_grams: 395.5190400000001
+total_day_ahead_cost: 85.91363200000002
+total_real_time_cost: 86.39400000000002
+day_ahead_cost_savings_vs_base: 0.0
+real_time_cost_savings_vs_base: 0.0
+============================================================
+threshold: 0.1
+tie_break_used_count: 19
+scales: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+total_carbon_grams: 395.5190400000001
+total_day_ahead_cost: 85.91363200000002
+total_real_time_cost: 86.39400000000002
+day_ahead_cost_savings_vs_base: 0.0
+real_time_cost_savings_vs_base: 0.0
+============================================================
+threshold: 0.2
+tie_break_used_count: 26
+scales: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+total_carbon_grams: 400.32272000000006
+total_day_ahead_cost: 85.43326400000002
+total_real_time_cost: 84.47252800000001
+day_ahead_cost_savings_vs_base: 0.5591289633756823
+real_time_cost_savings_vs_base: 2.224080375952043
+>>> 
