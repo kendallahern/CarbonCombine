@@ -1,0 +1,108 @@
+apiVersion: carbonscaler.io/v1
+carbonScalerSpec:
+  deadline: 1
+  maxReplicas: 1
+  minReplicas: 1
+  profileName: nbody100k
+  progress: 0
+kind: CarbonScalerMPIJob
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"carbonscaler.io/v1","carbonScalerSpec":{"deadline":1,"maxReplicas":1,"minReplicas":1,"profileName":"nbody100k","progress":0},"kind":"CarbonScalerMPIJob","metadata":{"annotations":{},"name":"nbody","namespace":"default"},"spec":{"mpiReplicaSpecs":{"Launcher":{"replicas":1,"restartPolicy":"OnFailure","template":{"spec":{"containers":[{"args":["-np","$(WORKERS)","--allow-run-as-root","-bind-to","none","-map-by","slot","-mca","btl_vader_single_copy_mechanism","none","-mca","btl","^openib","elastic_nbody","-b","$(BODIES)","-i","$(ITERATIONS)","-c","1","-f","$(LOGS_FOLDER)","-r"],"command":["mpirun"],"env":[{"name":"WORKERS","value":"1"},{"name":"BODIES","value":"100000"},{"name":"ITERATIONS","value":"1"},{"name":"LOGS_FOLDER","value":"results/two/"}],"image":"washraf/nbody:latest","imagePullPolicy":"IfNotPresent","name":"mpi","resources":{"limits":{"cpu":1,"memory":"2Gi"}},"volumeMounts":[{"mountPath":"/code/results","name":"nfs-pv"}]}],"volumes":[{"name":"nfs-pv","persistentVolumeClaim":{"claimName":"collector-pvc"}}]}}},"Worker":{"replicas":1,"restartPolicy":"OnFailure","template":{"spec":{"containers":[{"image":"washraf/nbody","imagePullPolicy":"IfNotPresent","name":"mpi","resources":{"limits":{"cpu":1,"memory":"0.5Gi"}},"volumeMounts":[{"mountPath":"/code/results","name":"nfs-pv"}]}],"volumes":[{"name":"nfs-pv","persistentVolumeClaim":{"claimName":"collector-pvc"}}]}}}},"runPolicy":{"cleanPodPolicy":"Running"},"slotsPerWorker":1}}
+  creationTimestamp: "2026-03-26T15:31:07Z"
+  generation: 1
+  name: nbody
+  namespace: system
+  resourceVersion: "446476"
+  uid: 421f5d66-9dec-4407-880d-85e3cb5cf6fe
+spec:
+  mpiReplicaSpecs:
+    Launcher:
+      replicas: 1
+      restartPolicy: OnFailure
+      template:
+        spec:
+          containers:
+          - args:
+            - -np
+            - $(WORKERS)
+            - --allow-run-as-root
+            - -bind-to
+            - none
+            - -map-by
+            - slot
+            - -mca
+            - btl_vader_single_copy_mechanism
+            - none
+            - -mca
+            - btl
+            - ^openib
+            - elastic_nbody
+            - -b
+            - $(BODIES)
+            - -i
+            - $(ITERATIONS)
+            - -c
+            - "1"
+            - -f
+            - $(LOGS_FOLDER)
+            - -r
+            command:
+            - mpirun
+            env:
+            - name: WORKERS
+              value: "1"
+            - name: BODIES
+              value: "100000"
+            - name: ITERATIONS
+              value: "1"
+            - name: LOGS_FOLDER
+              value: results/two/
+            image: washraf/nbody:latest
+            imagePullPolicy: IfNotPresent
+            name: mpi
+            resources:
+              limits:
+                cpu: 1
+                memory: 2Gi
+            volumeMounts:
+            - mountPath: /code/results
+              name: nfs-pv
+          volumes:
+          - name: nfs-pv
+            persistentVolumeClaim:
+              claimName: collector-pvc
+    Worker:
+      replicas: 1
+      restartPolicy: OnFailure
+      template:
+        spec:
+          containers:
+          - image: washraf/nbody
+            imagePullPolicy: IfNotPresent
+            name: mpi
+            resources:
+              limits:
+                cpu: 1
+                memory: 0.5Gi
+            volumeMounts:
+            - mountPath: /code/results
+              name: nfs-pv
+          volumes:
+          - name: nfs-pv
+            persistentVolumeClaim:
+              claimName: collector-pvc
+  runPolicy:
+    cleanPodPolicy: Running
+  slotsPerWorker: 1
+status:
+  conditions:
+  - lastTransitionTime: "2026-03-30T16:32:30Z"
+    lastUpdateTime: "2026-03-30T16:32:30Z"
+    message: CarbonScalerMPIJob stopped.
+    reason: JobStopped
+    status: "True"
+    type: Paused
+  replicaStatuses: {}
+  startTime: "2026-03-26T15:31:07Z"
