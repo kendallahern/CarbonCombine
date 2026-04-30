@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nbody100k
+  namespace: system
+data:
+  profileName: "nbody100k"
+  minReplicas: "1"
+  maxReplicas: "4"
+  deadline: "100"
+  slotsPerWorker: "1"
+  workers: "1"
+  bodies: "100000"
+  iterations: "100"
+  logsFolder: "results/two/"
+  launcherImage: "washraf/nbody:latest"
+  workerImage: "washraf/nbody"
+  launcherCpu: "1"
+  launcherMemory: "2Gi"
+  workerCpu: "1"
+  workerMemory: "0.5Gi"
